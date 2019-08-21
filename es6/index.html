@@ -12,19 +12,19 @@
     <script>
       var promiseOld = (new Promise((resolve, reject) => {
         setTimeout(function() {
-          resolve(888);
+          reject(888);
         }, 1000);
       }))
       .then(function(res) {
-        console.log('111', res);
+        console.log('then1::', res);
         // return new Promise((resolve, reject) => {
-        //   reject({name: 'xiaowa'});
+        //   resolve({ name: 'xiaowa' });
         // });
       })
       .catch(function(err) {
-        console.log('reject err::', err);
+        console.log('catch err::', err);
       });
-      // promiseOld.then(res => console.log('res2::', res));
+      // promiseOld.then(res => console.log('then2::', res));
     </script>
 </body>
 </html>
