@@ -14,7 +14,11 @@
 </template>
 <script>
 export default {
-  props: ['title', 'imageList']
+  // props: ['title', 'imageList'],
+  props: {
+    title: String,
+    imageList: Array
+  }
 }
 </script>
 <style scoped>

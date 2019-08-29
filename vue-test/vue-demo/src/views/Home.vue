@@ -8,11 +8,17 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import HomeComponent from '@/components/Home.vue';
+import { mixin } from '@/utils.js'
 
 export default {
   name: 'home',
+  mixins: [mixin],
   components: {
     HomeComponent
+  },
+  created: function () {
+    console.log(this.$data)
+    // => { message: "goodbye", foo: "abc", bar: "def" }
   },
   data() {
     return { 

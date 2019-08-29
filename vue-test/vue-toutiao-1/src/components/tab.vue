@@ -1,13 +1,8 @@
 <template>
   <div>
-    <!-- <div>
-      <span>推荐</span>
-      <span>热点</span>
-      <span>农业 </span>
+    <div v-on:click="clicking">
+      <span>+</span>
     </div>
-    <div> 
-      <slot></slot>
-    </div> -->
     <div>
       <slot name='header'></slot>
     </div>
@@ -18,6 +13,12 @@
 </template>
 <script>
 export default {
-  
+  methods: {
+      clicking() {
+        this.$emit('my-event', {
+          name: 'naruto'
+        })
+      }
+    }
 }
 </script>   

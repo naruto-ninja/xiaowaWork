@@ -1,7 +1,9 @@
 <template>
   <div>
-    
-      <tab>
+      <component 
+        v-bind:is="page"
+        v-on:my-event="showMoreTab"
+      >
         <template v-slot:header>
           <div>
             <span>推荐</span>
@@ -19,13 +21,14 @@
             </component> 
           </div>
        </template>
-      </tab>
+      </component>
   </div>
 </template>
 <script>
 
 import * as components from '../items';
 import tab from '../components/tab.vue';
+import setting from './setting.vue';
 
 const converModule2Obj = muduleObj => {
   let result = {}
@@ -40,12 +43,15 @@ export default {
     ...converModule2Obj(components), 
     tab, 
     // 异步组件
-    Agriculture: () => import(/* webpackChunkName: 'agriculture' */ '../items/agriculture.vue') 
+    Agriculture: () => import(/* webpackChunkName: 'agriculture' */ '../items/agriculture.vue') ,
+    setting
   },
 
   data() {
     return {
       list: [],
+      page: 'tab',
+      curTab: 'agriculture',
     }
   },
 
@@ -60,6 +66,7 @@ export default {
     fetch('/list?tab=agriculture')
       .then(res => res.json())
       .then(({data}) => {
+        console.log('data::', data);
         this.list = data;
       })
   },
@@ -67,7 +74,17 @@ export default {
   methods: {
     onReachBottom() {
       console.log('加载')
-    }
+    },
+    showMoreTab(event) {
+      // console.log('showMoreTab event::', event);
+      if (event === 'hide') {
+          this.page = 'tab';
+        } else {
+          // window.location.hash = '#/setting'
+          this.$router.push('/setting');
+          // this.page = 'setting';
+        }
+      }
   }
 }
 </script>  
