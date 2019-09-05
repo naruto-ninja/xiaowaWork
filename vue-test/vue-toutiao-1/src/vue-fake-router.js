@@ -34,6 +34,7 @@
     })
     
     Vue.component('router-view', {
+      // vue props性能优化屏蔽
       functional: true,
       render(createElement, {props, children, parent}) {
         const currentHash = location.hash;

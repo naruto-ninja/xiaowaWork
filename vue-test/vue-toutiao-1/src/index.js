@@ -4,8 +4,8 @@
  * */
 
 import Vue from  'vue';
-// import VueRouter from 'vue-router';
-import VueRouter from './vue-fake-router.js';
+import VueRouter from 'vue-router';
+// import VueRouter from './vue-fake-router.js';
 
 // 自定义插件
 import plugins from './utils';
