@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>逻辑层</title>
+  <style>
+    .view {
+      
+    }
+  </style>
+</head>
+<body>
+  <script src="./service.js"></script>
+  <script src="./bridge.js"></script>
+  <script>
+    window.appJson = {
+      "pages": [
+          "pages/index/index",
+          "pages/logs/logs",
+          "components/items/multiple-pic/multiple-pic",
+          "components/items/single-pic/single-pic"
+      ],
+      "window": {
+          "backgroundTextStyle": "light",
+          "navigationBarBackgroundColor": "#fff",
+          "navigationBarTitleText": "WeChat",
+          "navigationBarTextStyle": "black"
+      },
+      "sitemapLocation": "sitemap.json"
+    };
+
+    Page('pages/index/index',{
+      data: {
+        name: 'naruto'
+      }
+    });
+    
+    window.logic.init();
+  </script>
+</body>
+</html>

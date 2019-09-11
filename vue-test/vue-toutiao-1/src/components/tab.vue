@@ -15,6 +15,7 @@
 export default {
   methods: {
       clicking() {
+        console.log('this.$slot.default::', this.$slots.header, this.$children)
         this.$emit('my-event', {
           name: 'naruto'
         })

@@ -15,6 +15,7 @@ import Main from './pages/main.vue';
 import Setting from './pages/setting.vue';
 import Detail from './pages/detail.vue';
 import Video from './components/video.vue';
+import Login from './pages/login.vue';
 
 Vue.use(VueRouter);
 Vue.use(plugins);
@@ -24,10 +25,10 @@ const routes = [
     path: '/page',
     component: Main
   }, {
-    path: '/setting',
+    path: '/page/setting',
     component: Setting
   }, {
-    path: '/detail/:id',
+    path: '/page/detail/:id',
     component: Detail,
     props: true,
     children: [
@@ -36,13 +37,26 @@ const routes = [
         component: Video
       }
     ]
+  }, {
+    path: '/page/login',
+    component: Login
   }
 ]
 
 const router = new VueRouter({
   routes,
   // mode: 'history'
-})
+});
+
+router.beforeEach((to, from, next) => {
+  if(!/uid/.test(document.cookie) && to.path !== '/page/login') {
+    // 跳转登录页
+    next('/page/login');
+  } else {
+    next();
+  }
+  
+});
 
 const vm = new Vue({
   el: '#app',

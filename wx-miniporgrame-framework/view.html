@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>试图层</title>
+</head>
+<body>
+  <div id="app"></div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="./bridge.js"></script>
+  <script>
+    let vm = null
+     
+    window.__bridge.onMessage((res) => {
+      console.log('onMessage res::', res);
+      if(res.type === 'initSet') {
+        vm = new Vue({
+          el: '#app',
+          data() {
+            return res.data;
+          },
+          components: {
+            'wx-text': {
+              template: `<span>
+                  <slot></slot>
+                </span>`
+            }
+          },
+          template: `<wx-text>
+              这就是详情页{{name}}
+            </wx-text>`
+        })
+      } else if(res.type === 'setData') {
+        
+      }
+     
+    })
+  </script>
+</body>
+</html>

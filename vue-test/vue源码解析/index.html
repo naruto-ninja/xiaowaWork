@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vue源码实现</title>
+</head>
+<body>
+  <div id="app"></div>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+  <script>
+
+    // 观察者目标队列
+    class Dep {
+      constructor() {
+        // 定义观察者的目标队列
+        this.subs = [];
+      }
+      // 这里定义一个广播方法，当目标状态更新时，通知观察者队列更新
+      notify () {
+        const subs = this.subs.slice();
+        for(let i = 0, length = this.subs.length; i < length; i++) {
+          this.subs[i].update();
+        }
+      }
+      // 往目标队列中添加观察者
+      addSub(sub) {
+        if(this.subs.indexOf(sub) === -1) {
+          this.subs.push(sub);
+        }
+      }
+
+      addDepend() {
+        Dep.targets[Dep.targets.length - 1].addDep(this);
+      }
+    }
+
+    Dep.targets = [];
+
+    function pushTarget (instance) {
+      // 接下来发生的所有的依赖都算在这个instance头上
+      Dep.targets.push(instance);
+    }
+
+    function popTarget() {
+      return Dep.targets.pop();
+    }
+
+    // 观察数据决定是否刷新
+    class Watcher {
+      // getter ==> render
+      constructor(getter, callback) {
+        this.callback = callback;
+        this.getter = getter;
+        this.value = this.get();
+      }
+
+      get() {
+        // 记录一下我自己
+        pushTarget(this);
+        // 执行Vue render函数
+        let value = this.getter();
+        popTarget();
+        return value;
+      }
+
+      addDep(dep) {
+        dep.addSub(this);
+      }
+
+      update() {
+        let newVal = this.get();
+        this.value = newVal;
+      }
+    } 
+
+    class Observer {
+      constructor(obj) {
+        this.walk(obj)
+      }
+      // 深层递归 data函数中对象返回值
+      walk(obj) {
+        Object.keys(obj).forEach(key => {
+          if(typeof obj[key] === 'object' && obj[key] !== null) {
+            this.walk(obj[key]);
+          }
+          this.defineReactive(obj, key, obj[key])
+        });
+        return obj;
+      }
+
+      defineReactive (obj, key, value) {
+        const dep = new Dep()
+        Object.defineProperty(obj, key, {
+          get: function() {
+            // 每次render执行时，都会调用这里的getter
+
+            // 添加到windows.watcher.dependces.add(this)
+            if(Dep.targets.length > 0) {
+              dep.addDepend();
+            }
+            return value;
+          },
+          set: function(newVal) {
+            // 修改data中的数据，每次都会调用set更新，更新数据后通知页面加载新的更改的数据
+            // console.log('set-recruit!!::', newVal);
+            value = newVal;
+            // 通知刷新
+            dep.notify();
+          }
+        });
+      }
+    }  
+
+    class Vue {
+      constructor(options) {
+        this.$el = document.querySelector(options.el);
+        this._data = options.data && options.data();
+        new Observer(this._data);
+        this.render = options.render;
+        // Vue data数据挂载到this上，可以通过this.price获取data上的数据
+        for (let key in this._data) {
+          this.proxy(this, this._data, key);
+        }
+        new Watcher(() => {
+          this._update();
+        }, () => {
+          console.log('callback!!!');
+        })
+      }
+      // 代理函数，在vm实例中，实现可以通过this直接访问data中的数据
+      proxy(target, data, key) {
+        Object.defineProperty(target, key, {
+          get: function() {
+            return data[key];
+          },
+          set: function(newVal) {
+            data[key] = newVal
+          }
+        });
+      }
+
+      // 函数执行栈，遵循先进后出的原则
+      _createElement(tagName, data, children) {
+        const tag = document.createElement(tagName);
+        const { attrs = {} } = data;
+        for(let attrName in attrs) {
+          tag.setAttribute(attrName, attrs[attrName]);
+        }
+        // 如果在render函数中，第三个参数不是数组的时候，已经到根结点，直接渲染
+        if(Object.prototype.toString.call(children) !== "[object Array]") {
+          let child =  document.createTextNode(children);
+          tag.appendChild(child);
+        } else {
+          children.forEach(child => {
+            // 这里child是已经执行过createElement函数的dom元素
+            tag.appendChild(child)
+          });
+        }
+        return tag;
+      }
+
+      _update() {
+        const $root = this.render(this._createElement);
+        // console.log('root--------:', $root);
+        api.replaceChild(this.$el, $root);
+        this.$el = $root;
+      }
+    }
+
+    const api = {
+      // 替换更新后的元素
+      replaceChild(oldElement, element) {
+        return oldElement.parentElement.replaceChild(element, oldElement);
+      }
+    }
+
+    window.app = new Vue({
+      el: '#app',
+      data() {
+        return {
+          price: '27',
+          infos: {
+            title: '猪肉的价格'
+          }
+        }
+      },
+      render(createElement) {
+        return createElement(
+          'div', 
+          {
+            attrs: {
+              title: this.infos.title
+            }
+          }, 
+          [
+            createElement(
+              'span', 
+              {}, 
+              this.price
+            )
+          ]
+        )
+      }
+    })
+  </script>
+</body>
+</html>

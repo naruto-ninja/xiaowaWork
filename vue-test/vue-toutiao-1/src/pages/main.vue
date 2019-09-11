@@ -81,7 +81,7 @@ export default {
           this.page = 'tab';
         } else {
           // window.location.hash = '#/setting'
-          this.$router.push('/setting');
+          this.$router.push('/page/setting');
           // this.page = 'setting';
         }
       }
