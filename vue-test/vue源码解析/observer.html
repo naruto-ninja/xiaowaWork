@@ -10,30 +10,30 @@
   <div>observer</div>
   <script>
     // pub/sub 发布/订阅
-    // var pubsub = (()=>{
-    //   var topics = {};
-    //   function subscribe(topic,fn){
-    //     if(!topics[topic]){
-    //       topics[topic] = [];  
-    //     }
-    //     topics[topic].push(fn);
-    //   }
-    //   function publish(topic, ...args){
-    //     if(!topics[topic]) return;
-    //     for(let fn of topics[topic]){
-    //       fn(...args);  
-    //     }
-    //   }
-    //   return {
-    //       subscribe,
-    //       publish
-    //   }
-    // })();
+    var pubsub = (()=>{
+      var topics = {};
+      function subscribe(topic,fn){
+        if(!topics[topic]){
+          topics[topic] = [];  
+        }
+        topics[topic].push(fn);
+      }
+      function publish(topic, ...args){
+        if(!topics[topic]) return;
+        for(let fn of topics[topic]){
+          fn(...args);  
+        }
+      }
+      return {
+          subscribe,
+          publish
+      }
+    })();
 
-    // pubsub.subscribe('test',function(a,b){  //订阅者A订阅了test事件
-    //   console.log(a,b);    
-    // });
-    // pubsub.publish('test','123','HH');   //123  HH（发布者B发布了test事件）
+    pubsub.subscribe('test',function(a,b){  //订阅者A订阅了test事件
+      console.log(a,b);    
+    });
+    pubsub.publish('test','123','HH');   //123  HH（发布者B发布了test事件）
 
     // observer 观察者模式
     class Subject {

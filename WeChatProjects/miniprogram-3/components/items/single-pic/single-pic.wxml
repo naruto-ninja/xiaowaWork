@@ -1,0 +1,10 @@
+<!--components/items/single-pic/single-pic.wxml-->
+<view class="item single-pic"> 
+  <view class="content"> 
+    <text>
+      {{data.title}}
+    </text>
+  </view> 
+  <image src="{{data.imageList[0]}}"></image> 
+</view>
+

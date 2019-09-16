@@ -1,0 +1,11 @@
+/* components/items/detial/detial.wxss */
+.video-container {
+    position: relative;
+}
+.video-title {
+    position: absolute;
+    z-index: 2;
+    top: 10px;
+    left: 0;
+    color: #fff;
+}

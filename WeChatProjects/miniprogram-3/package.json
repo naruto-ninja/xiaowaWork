@@ -1,0 +1,15 @@
+{
+  "name": "miniprogram-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "preview": "/Applications/wechatwebdevtools.app/Contents/MacOS/cli -p `pwd`",
+    "test": "node simulator.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "miniprogram-automator": "^0.5.9"
+  }
+}

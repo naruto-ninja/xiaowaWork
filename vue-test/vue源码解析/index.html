@@ -91,11 +91,10 @@
       }
 
       defineReactive (obj, key, value) {
-        const dep = new Dep()
+        const dep = new Dep();
         Object.defineProperty(obj, key, {
           get: function() {
             // 每次render执行时，都会调用这里的getter
-
             // 添加到windows.watcher.dependces.add(this)
             if(Dep.targets.length > 0) {
               dep.addDepend();
@@ -129,6 +128,7 @@
           console.log('callback!!!');
         })
       }
+
       // 代理函数，在vm实例中，实现可以通过this直接访问data中的数据
       proxy(target, data, key) {
         Object.defineProperty(target, key, {

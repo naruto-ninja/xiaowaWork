@@ -1,0 +1,6 @@
+<!--components/items/multiple-pic/multiple-pic.wxml-->
+<view class="video-container">
+    <video src="http://v3-default.ixigua.com/b968ad966806d3cc0d1549eabd83e9d2/5d7e3fdc/video/m/220aa596933147e4962a931db39d378c0f111636caa6000064d7abba37e3/?a=1217&br=514&cr=0&cs=0&dr=0&ds=2&er=&l=2019091520400301001404706815BA454B&lr=&rc=ajNucGl5O3M1bzMzOjczM0ApNjs1Zjw1aWVnNzRkZjw0O2cwaTRuci9vNmtfLS1fLS9zc2I1NjJjNC1fNjUzL15gMi06Yw%3D%3D">
+        <cover-view class="video-title">标题标题标题标题标题标题标题标题标题标题标题标题标题标题标题</cover-view>
+    </video>
+</view>

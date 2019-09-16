@@ -1,0 +1,22 @@
+<!--index.wxml-->
+<template name="singlePic">
+    <singlePic data="{{data}}"></singlePic>
+</template>  
+<template name="multiplePic">
+    <multiplePic data="{{data}}"></multiplePic> 
+</template>  
+
+<view class="container">
+    <view
+        wx:for="{{list}}"
+        wx:for-item="item"
+        wx:key="{{index}}"
+    >
+        <!-- <singlePic></singlePic>
+        <multiplePic></multiplePic> -->
+        <template is="{{item.type}}" data="{{...item}}"></template>  
+    </view>
+    <navigator url="/pages/index/index">
+        跳转
+    </navigator>
+</view>
